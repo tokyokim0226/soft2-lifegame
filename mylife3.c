@@ -128,7 +128,7 @@ void my_init_cells(const int height, const int width, int (*cell)[width], FILE *
             else if (is_RLE == 1) {
                 for (int i = 0; i < len; ++i) {
                     if ('0' <= buf[i] && buf[i] <= '9') {
-                        len_buffer = len_buffer * 10 - (buf[i] - '0');
+                        len_buffer = len_buffer * 10 + (buf[i] - '0');
                     }
                     else {
                         if (buf[i] == '!') {
@@ -136,17 +136,30 @@ void my_init_cells(const int height, const int width, int (*cell)[width], FILE *
                             break;
                         }
                         else if (buf[i] == '$') {
+                            if (len_buffer == 0) {
+                                len_buffer = 1;
+                            }
                             x = 0;
-                            y += 1;
+                            y += len_buffer;
                             len_buffer = 0;
                         }
                         else if (buf[i] == 'b' || buf[i] == 'o') {
                             if (len_buffer == 0) {
-                                return;
+                                len_buffer = 1;
                             }
+                            if (buf[i] == 'o') {
+                                for (int j = 0; j < len_buffer; ++j) {
+                                    cell[y][x+j] = 1;
+                                }
+                            }
+                            x += len_buffer;
+                            len_buffer = 0;
                         }
                     }
                 }
+            }
+            if (end_of_file) {
+                break;
             }
         }
     }
