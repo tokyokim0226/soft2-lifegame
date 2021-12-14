@@ -102,17 +102,52 @@ void my_init_cells(const int height, const int width, int (*cell)[width], FILE *
         return;
     }
 
-    const size_t bufsize = 100;
+    const size_t bufsize = 500;
     char buf[bufsize];
+    int end_of_file = 0;
+    int x = 0;
+    int y = 0;
+    int len_buffer = 0;
+    int is_RLE = 0;
 
     while (fgets(buf, bufsize, fp)!=NULL) {
-        if (buf[0] == '#') {
+        size_t len = strlen(buf) - 1;
+        if (buf[0] == '#' && ((buf[1] == 'L' && buf[2] == 'i' && buf[3] == 'f' && buf[4] == 'e' && buf[5] == ' ' && buf[6] == '1' && buf[7] == '.' && buf[8] == '0' && buf[9] == '6') || buf[1] == 'C' || buf[1] == 'c' || buf[1] == 'N' || buf[1] == 'O' || buf[1] == 'P' || buf[1] == 'R' || buf[1] == 'r')) {
+            continue;
+        }
+        else if (buf[0] == 'x' && buf[2] == '=') {
+            is_RLE = 1;
             continue;
         }
         else {
-            int x, y;
-            sscanf(buf, "%d %d%*1[\n]", &x, &y);
-            cell[y][x] = 1;
+            if (is_RLE == 0) {
+                int x2, y2;
+                sscanf(buf, "%d %d%*1[\n]", &x2, &y2);
+                cell[y2][x2] = 1;
+            }
+            else if (is_RLE == 1) {
+                for (int i = 0; i < len; ++i) {
+                    if ('0' <= buf[i] && buf[i] <= '9') {
+                        len_buffer = len_buffer * 10 - (buf[i] - '0');
+                    }
+                    else {
+                        if (buf[i] == '!') {
+                            end_of_file = 1;
+                            break;
+                        }
+                        else if (buf[i] == '$') {
+                            x = 0;
+                            y += 1;
+                            len_buffer = 0;
+                        }
+                        else if (buf[i] == 'b' || buf[i] == 'o') {
+                            if (len_buffer == 0) {
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
