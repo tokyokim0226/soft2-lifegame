@@ -2,7 +2,9 @@
 
 - Kadai 1-3 are all included within `mylife3.c`. However, I will still explain the processes I used to navigate through the project step by step.
 
-- Kadai 4 is an extension of Kadai 3 that accepts any lifegame rule in the format Bxxxxx/Sxxxxx. The different types of rules are referenced [here](https://www.conwaylife.com/wiki/List_of_Life-like_cellular_automata)
+- Kadai 4 (`mylife4.c`) is an extension of Kadai 3 that accepts any lifegame rule in the format Bxxxxx/Sxxxxx. The different types of rules are referenced [here](https://www.conwaylife.com/wiki/List_of_Life-like_cellular_automata)
+
+    (発展課題では任意のルールを`argv[2]`として入力するとそのルールの通りでゲームを実行することができるようにしました)
 
 
 # Introduction
