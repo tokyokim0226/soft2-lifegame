@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <unistd.h> // sleep()関数を使う
 
 //initializing cells by reading in a file. The format of the file will be rendered within this function.
@@ -90,7 +91,7 @@ int main(int argc, char **argv){
 }
 
 void my_init_cells(const int height, const int width, int (*cell)[width], FILE *fp) {
-
+    srand(time(0));
     if (fp == NULL) {
         for (int y = 0; y < height; ++y) {
             for (int x = 0; x < width ; ++x) {

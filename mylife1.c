@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <unistd.h> // sleep()関数を使う
 #include "gol.h"
 
@@ -73,6 +74,7 @@ int main(int argc, char **argv){
 
 void my_init_cells(const int height, const int width, int (*cell)[width], FILE *fp) {
 
+    srand(time(0));
     if (fp == NULL) {
         for (int y = 0; y < height; ++y) {
             for (int x = 0; x < width ; ++x) {
@@ -144,7 +146,6 @@ void my_print_cells(FILE *fp, int gen, const int height, const int width, int (*
 //counts how many of the 8 adjacent cells around a cell with coordinates (h,w) are a non-dead cell
 int my_count_adjacent_cells(int h, int w, const int height, const int width, int cell[height][width]) {
     int count = 0;
-
     int dx[8] = {-1, 0, 1, -1, 1, -1, 0, 1};
     int dy[8] = {-1, -1, -1, 0, 0, 1, 1, 1};
 
